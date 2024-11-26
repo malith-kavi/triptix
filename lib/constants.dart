@@ -18,15 +18,16 @@ const HeaderText2 = TextStyle(
 
 const BodyText1 = TextStyle(
   color: Color.fromARGB(255, 255, 255, 255), 
-  fontSize: 15,
+  fontSize: 18,
   height: 1,
+  fontWeight: FontWeight.bold,
   );
 
 const BodyText2 = TextStyle(
-  color: Color.fromARGB(255, 0, 0, 0), 
-  fontSize: 12,
+  color: Color.fromARGB(255, 255, 255, 255), 
+  fontSize: 17,
   height: 1,
-  fontWeight: FontWeight.bold
+  fontWeight: FontWeight.normal
   );
 
   const BodyText3 = TextStyle(
