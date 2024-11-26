@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:triptix/screens/driver_login_screen.dart';
+import 'package:triptix/screens/driver_register_screen.dart';
 import 'package:triptix/screens/landing_screen.dart';
+import 'package:triptix/screens/passenger_login_screen.dart';
+import 'package:triptix/screens/passenger_register_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: LandingScreen(),
+      home: PassengerRegisterScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
