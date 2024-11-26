@@ -21,7 +21,7 @@ class LandingScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(1),
                     child: Image.asset(
                       logo,
-                      width: 300,
+                      width: 360,
                       height: 300,
                         ),
                       ),
