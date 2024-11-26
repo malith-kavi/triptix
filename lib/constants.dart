@@ -16,6 +16,13 @@ const HeaderText2 = TextStyle(
   height: 1.2,
   );
 
+const HeaderText3 = TextStyle(
+  color: Color.fromARGB(255, 255, 255, 255), 
+  fontSize: 28, 
+  fontWeight: FontWeight.bold,
+  height: 1.2,
+  );
+
 const BodyText1 = TextStyle(
   color: Color.fromARGB(255, 255, 255, 255), 
   fontSize: 18,
