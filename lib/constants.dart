@@ -42,3 +42,9 @@ const BodyText2 = TextStyle(
   fontSize: 14,
   height: 1,
   );
+
+  const BodyText4 = TextStyle(
+  color: Color.fromARGB(255, 0, 0, 0), 
+  fontSize: 20,
+  height: 1,
+  );
