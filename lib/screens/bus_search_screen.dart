@@ -96,9 +96,9 @@ class BusSearchScreen extends StatelessWidget {
                   
                         //Spacer(),
                         SizedBox(height: 20,)
-                    ],
+                      ],
+                    ),
                   ),
-                                ),
                 ),
             ),
           ),
