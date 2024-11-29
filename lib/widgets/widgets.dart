@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:triptix/constants.dart';
 
 class CustomCard extends StatelessWidget {
   final IconData icon;
@@ -160,6 +161,120 @@ class SButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+class PCard extends StatelessWidget {
+  final String price;
+  final String town;
+  final String starttime;
+  final String duration;
+  final String endtime;
+  final String busnumber;
+  final String seats;
+  final VoidCallback onTap;
+  
+  const PCard({
+    required this.price, 
+    required this.town, 
+    required this.starttime,
+    required this.duration,
+    required this.endtime,
+    required this.busnumber,
+    required this.seats,
+    required this.onTap
+    });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        child: Container(
+          height: 150,
+          width: 300,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      price,
+                      style: BodyText3,
+                    ),
+                  ],
+                ),
+                Text(
+                  town,
+                  style: BodyText4,
+                ),
+                SizedBox(height: 10,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5,right: 5),
+                      child: Text(
+                        starttime,
+                        style: BodyText3,
+                      ),
+                    ),
+
+                    Expanded(
+                      child: Divider(
+                        color: Colors.black54, 
+                        thickness: 1,
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5,right: 5),
+                      child: Text(
+                        duration,
+                        style: BodyText3,
+                        ),
+                    ),
+                    
+                    Expanded(
+                      child: Divider(
+                        color: Colors.black54, 
+                        thickness: 1,
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5,right: 5),
+                      child: Text(
+                        endtime,
+                        style: BodyText3,
+                        ),
+                    ),
+                  ],
+                ),
+                Spacer(),
+                Row(
+                  children: [
+                    Text(
+                      busnumber,
+                      style: BodyText3,
+                    ),
+                    Spacer(),
+                    Text(
+                      seats,
+                      style: BodyText3,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
     );
   }
 }
