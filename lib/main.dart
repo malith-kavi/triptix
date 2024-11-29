@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:triptix/screens/bus_search_screen.dart';
 import 'package:triptix/screens/driver_login_screen.dart';
 import 'package:triptix/screens/driver_register_screen.dart';
 import 'package:triptix/screens/landing_screen.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: PassengerRegisterScreen(),
+      home: BusSearchScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
