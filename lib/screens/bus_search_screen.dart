@@ -63,7 +63,7 @@ class BusSearchScreen extends StatelessWidget {
                                 SizedBox(height: 5,),
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(15, 0, 50, 0),
-                                  child: TextField(),
+                                  child: TextField(style: TextStyle(color: Colors.white),),
                                 ),
                                 SizedBox(height: 20,),
                                 Row(
@@ -78,7 +78,7 @@ class BusSearchScreen extends StatelessWidget {
                                 SizedBox(height: 5,),
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(15, 0, 50, 0),
-                                  child: TextField(),
+                                  child: TextField(style: TextStyle(color: Colors.white),),
                                 ),
                                 SizedBox(height: 25,),
                             
