@@ -48,3 +48,10 @@ const BodyText2 = TextStyle(
   fontSize: 20,
   height: 1,
   );
+
+  const BodyText5 = TextStyle(
+  color: Color.fromARGB(255, 0, 0, 0), 
+  fontSize: 14,
+  fontWeight: FontWeight.bold,
+  height: 1,
+  );
