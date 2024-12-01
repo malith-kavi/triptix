@@ -281,3 +281,131 @@ class PCard extends StatelessWidget {
     );
   }
 }
+
+class ConfirmCard extends StatelessWidget {
+  final String price;
+  final String town;
+  final String starttime;
+  final String duration;
+  final String endtime;
+  final String busnumber;
+  final String seatnumber;
+  final VoidCallback onTap;
+  
+  const ConfirmCard({
+    required this.price, 
+    required this.town, 
+    required this.starttime,
+    required this.duration,
+    required this.endtime,
+    required this.busnumber,
+    required this.seatnumber,
+    required this.onTap
+    });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+    
+        child: Container(
+          height: 150,
+          width: 350,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 20,
+                      width: 80,
+                      decoration: BoxDecoration(
+                        color:const Color.fromARGB(255, 32, 138, 37),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(child: Text('BOOKED',style: BodyText6,)),
+                    ),
+                    Spacer(),
+                    Text(
+                      'LKR '+price+'.00',
+                      style: BodyText3,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10,),
+                Text(
+                  town,
+                  style: BodyText4,
+                ),
+                
+                Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5,right: 5),
+                      child: Text(
+                        starttime,
+                        style: BodyText3,
+                      ),
+                    ),
+
+                    Expanded(
+                      child: Divider(
+                        color: Colors.black54, 
+                        thickness: 1,
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5,right: 5),
+                      child: Text(
+                        duration+'h',
+                        style: BodyText3,
+                        ),
+                    ),
+                    
+                    Expanded(
+                      child: Divider(
+                        color: Colors.black54, 
+                        thickness: 1,
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5,right: 5),
+                      child: Text(
+                        endtime,
+                        style: BodyText3,
+                        ),
+                    ),
+                  ],
+                ),
+                Spacer(),
+                Row(
+                  children: [
+                    Text(
+                      busnumber,
+                      style: BodyText5,
+                    ),
+                    Spacer(),
+                    Text(
+                      'Seat Number '+seatnumber,
+                      style: BodyText5,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+    );
+  }
+}
