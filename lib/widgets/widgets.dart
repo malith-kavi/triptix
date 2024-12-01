@@ -164,6 +164,7 @@ class SButton extends StatelessWidget {
     );
   }
 }
+
 class PCard extends StatelessWidget {
   final String price;
   final String town;
@@ -188,9 +189,10 @@ class PCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+    
         child: Container(
           height: 150,
-          width: 300,
+          width: 350,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
@@ -205,7 +207,7 @@ class PCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      price,
+                      'LKR '+price+'.00',
                       style: BodyText3,
                     ),
                   ],
@@ -214,7 +216,8 @@ class PCard extends StatelessWidget {
                   town,
                   style: BodyText4,
                 ),
-                SizedBox(height: 10,),
+                
+                Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -236,7 +239,7 @@ class PCard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 5,right: 5),
                       child: Text(
-                        duration,
+                        duration+'h',
                         style: BodyText3,
                         ),
                     ),
@@ -262,12 +265,12 @@ class PCard extends StatelessWidget {
                   children: [
                     Text(
                       busnumber,
-                      style: BodyText3,
+                      style: BodyText5,
                     ),
                     Spacer(),
                     Text(
-                      seats,
-                      style: BodyText3,
+                      seats+' Seats available',
+                      style: BodyText5,
                     ),
                   ],
                 ),
