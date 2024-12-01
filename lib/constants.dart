@@ -55,3 +55,10 @@ const BodyText2 = TextStyle(
   fontWeight: FontWeight.bold,
   height: 1,
   );
+
+  const BodyText6 = TextStyle(
+  color: Color.fromARGB(255, 255, 255, 255), 
+  fontSize: 14,
+  height: 1,
+  fontWeight: FontWeight.bold
+  );
