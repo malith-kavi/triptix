@@ -50,7 +50,7 @@ class YourBookingScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'YOUR BOOKINGS',
+                              'AVAILABLE BOOKINGS',
                               style: HeaderText3,
                             ),
                           ],
