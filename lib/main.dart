@@ -4,14 +4,11 @@ import 'package:triptix/screens/bus_info_screen.dart';
 import 'package:triptix/screens/bus_search_screen.dart';
 import 'package:triptix/screens/bus_time_schedule.dart';
 import 'package:triptix/screens/current_bus_info_screen.dart';
-import 'package:triptix/screens/driver_login_screen.dart';
-import 'package:triptix/screens/driver_register_screen.dart';
 import 'package:triptix/screens/landing_screen.dart';
-import 'package:triptix/screens/passenger_login_screen.dart';
-import 'package:triptix/screens/passenger_register_screen.dart';
 import 'package:triptix/screens/payment_screen.dart';
 import 'package:triptix/screens/route_results_screen.dart';
 import 'package:triptix/screens/your_booking_screen.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: PaymentGatewayUI(),
+      home: YourBookingScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
