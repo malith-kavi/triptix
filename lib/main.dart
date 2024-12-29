@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:triptix/screens/booking_details_screen.dart';
 import 'package:triptix/screens/bus_info_screen.dart';
 import 'package:triptix/screens/bus_search_screen.dart';
@@ -10,7 +11,9 @@ import 'package:triptix/screens/route_results_screen.dart';
 import 'package:triptix/screens/your_booking_screen.dart';
 
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -21,7 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: YourBookingScreen(),
+      home: LandingScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
