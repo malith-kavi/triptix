@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:triptix/constants.dart';
+import 'package:triptix/services/firebase_auth_services.dart';
 import 'package:triptix/widgets/widgets.dart';
 
 var logo = 'assets/images/logo.png';
 
 class DriverRegisterScreen extends StatelessWidget {
-  const DriverRegisterScreen({super.key});
+  DriverRegisterScreen({super.key});
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController mobileNumberController = TextEditingController();
+  final TextEditingController nicController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -63,29 +71,48 @@ class DriverRegisterScreen extends StatelessWidget {
                               children: [
                                 Text('Name',style: BodyText1,),
                                 SizedBox(height: 5,),
-                                CustomTextInput(hintText: "Enter your Name"),
+                                CustomTextInput(controller: nameController, hintText: "Enter your Name"),
                                 SizedBox(height: 15,),
                                 Text('Mobile Number',style: BodyText1,),
                                 SizedBox(height: 5,),
-                                CustomTextInput(hintText: 'Enter your Mobile Number'),
+                                CustomTextInput(controller: mobileNumberController, hintText: 'Enter your Mobile Number'),
                                 SizedBox(height: 15,),
                                 Text('NIC Or Key',style: BodyText1,),
                                 SizedBox(height: 5,),
-                                CustomTextInput(hintText: "NIC Or Key"),
+                                CustomTextInput(controller: nicController, hintText: "NIC Or Key"),
                                 SizedBox(height: 15,),
                                 Text('Email',style: BodyText1,),
                                 SizedBox(height: 5,),
-                                CustomTextInput(hintText: 'Enter your Email'),
+                                CustomTextInput(controller: emailController, hintText: 'Enter your Email'),
                                 SizedBox(height: 15,),
                                 Text('Password',style: BodyText1,),
                                 SizedBox(height: 5,),
-                                CustomTextInput(hintText: "Enter your Password"),
+                                CustomTextInput(controller: passwordController, hintText: "Enter your Password"),
                                 SizedBox(height: 15,),
                                 Text('Confirm Password',style: BodyText1,),
                                 SizedBox(height: 5,),
-                                CustomTextInput(hintText: 'Confirm your Password'),
+                                CustomTextInput(controller: confirmPasswordController, hintText: 'Confirm your Password'),
                                 SizedBox(height: 25,),
-                                CustomButton(text: 'Register', onPressed: (){}),
+                                CustomButton(
+                                  text: 'Register', 
+                                  onPressed: (){
+                                    if (passwordController.text != confirmPasswordController.text){
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('Password do not match')),
+                                      );
+                                      return;
+                                    }
+
+                                    FirebaseAuthServices.registerDriver(
+                                      name: nameController.text, 
+                                      mobileNumber: mobileNumberController.text, 
+                                      nicOrkey: nicController.text, 
+                                      email: emailController.text, 
+                                      password: passwordController.text, 
+                                      context: context,
+                                    );
+                                  },
+                                ),
                               ],
                             ),
                         ),
