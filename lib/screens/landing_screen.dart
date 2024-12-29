@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:triptix/constants.dart';
+import 'package:triptix/screens/driver_login_screen.dart';
+import 'package:triptix/screens/passenger_login_screen.dart';
 import 'package:triptix/widgets/widgets.dart';
 
 var logo = 'assets/images/logo.png';
@@ -13,8 +15,8 @@ class LandingScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          SafeArea(
-            child: Container(  
+          
+            Container(  
               color: Colors.white,
                 child: Center(
                   child:Padding(
@@ -26,7 +28,7 @@ class LandingScreen extends StatelessWidget {
                         ),
                       ),
                   ),
-                ),
+                
               ),
   
           Expanded(
@@ -40,30 +42,42 @@ class LandingScreen extends StatelessWidget {
               ),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 40, 20, 25),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Simplify Your\n Travel Plans',
-                        style: HeaderText2,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Simplify Your\n Travel Plans',
+                          style: HeaderText2,
+                        ),
+                         SizedBox(height: 10,),
+                        SizedBox(
+                          height: 300,
+                          child: GridView.count(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 15,
+                          mainAxisSpacing: 15,
+                          childAspectRatio: 1,
+                          children: [
+                            CustomCard(
+                              icon: Icons.bus_alert_rounded, 
+                              text: 'Driver Login', 
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => DriverLoginScreen()));
+                              }),
+                            CustomCard(
+                              icon: Icons.emoji_people_rounded, 
+                              text: 'User Login', 
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => PassengerLoginScreen()));
+                              }),
+                            
+                          ]
+                        ),
                       ),
-                       Spacer(),
-                      SizedBox(
-                        height: 300,
-                        child: GridView.count(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 15,
-                        mainAxisSpacing: 15,
-                        childAspectRatio: 1,
-                        children: [
-                          CustomCard(icon: Icons.bus_alert_rounded, text: 'Driver Login', onTap: (){}),
-                          CustomCard(icon: Icons.emoji_people_rounded, text: 'User Login', onTap: (){}),
-                          
-                        ]
-                      ),
+                    
+                    ],
                     ),
-                    Spacer(),
-                  ],
-                ),
+                  ),
               ),
             ),
           ),
