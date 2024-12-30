@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:triptix/models/user_details.dart';
 
 class FirebaseAuthServices {
   static Future<void> registerDriver({
@@ -17,12 +18,22 @@ class FirebaseAuthServices {
         password: password
       );
 
-      await FirebaseFirestore.instance.collection('users').doc(userCredential.user?.uid).set({
-        'name':name,
-        'mobileNumber':mobileNumber,
-        'nicOrkey':nicOrkey,
-        'email':email,
-        'userType':'driver',
+      print("User registered with UID: ${userCredential.user?.uid}");
+
+
+      UserDetails driverDetails = UserDetails(
+        name: name,
+        mobileNumber: mobileNumber,
+        nicOrkey: nicOrkey,
+        email: email,
+        userType: 'driver',
+      );
+
+      print("Data to be saved: ${driverDetails.toFirestore()}");
+
+
+      await FirebaseFirestore.instance.collection('users').doc(userCredential.user?.uid).set(driverDetails.toFirestore()).then((value) => print("User details saved to Firestore")).catchError((error) {
+        print("Error saving user details to Firestore: $error");
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -31,6 +42,7 @@ class FirebaseAuthServices {
 
       
     } catch (e) {
+      print("Error during registration: $e ");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: ${e.toString()}')),
       );
