@@ -93,26 +93,26 @@ class PassengerRegisterScreen extends StatelessWidget {
                                 SizedBox(height: 5,),
                                 CustomTextInput(controller: confirmPasswordController, hintText: 'Confirm your Password'),
                                 SizedBox(height: 25,),
-                                CustomButton(
-                                  text: 'Register', 
-                                  onPressed: (){
-                                    if (passwordController.text != confirmPasswordController.text) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(content: Text('Passwords do not match')),
-                                      );
-                                      return;
-                                    }
+                                // CustomButton(
+                                //   text: 'Register', 
+                                //   onPressed: (){
+                                //     if (passwordController.text != confirmPasswordController.text) {
+                                //       ScaffoldMessenger.of(context).showSnackBar(
+                                //         const SnackBar(content: Text('Passwords do not match')),
+                                //       );
+                                //       return;
+                                //     }
                                     
-                                    FirebaseAuthServices.registerPassenger(
-                                      name: nameController.text, 
-                                      mobileNumber: mobileNumberController.text, 
-                                      nicOrkey: nicController.text, 
-                                      email: emailController.text, 
-                                      password: passwordController.text, 
-                                      context: context
-                                    );
-                                  },
-                                ),
+                                //     FirebaseAuthServices.registerPassenger(
+                                //       name: nameController.text, 
+                                //       mobileNumber: mobileNumberController.text, 
+                                //       nicOrkey: nicController.text, 
+                                //       email: emailController.text, 
+                                //       password: passwordController.text, 
+                                //       context: context
+                                //     );
+                                //   },
+                                // ),
                               ],
                             ),
                         ),

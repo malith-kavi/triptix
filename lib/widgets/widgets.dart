@@ -414,7 +414,7 @@ class ConfirmCard extends StatelessWidget {
 class BusLayout extends StatelessWidget {
   final double height;
   final double width;
-  final VoidCallback? onChairTap; // Optional callback for chair button
+  final VoidCallback? onChairTap; 
 
   BusLayout({
     this.height = 600,
@@ -1209,3 +1209,261 @@ class BusLayout3 extends StatelessWidget {
   }
 }
 
+
+class CustomTextInput2 extends StatelessWidget {
+  final String hintText;
+  final TextEditingController? controller;
+  final bool obscureText;
+  final TextInputType keyboardType;
+  final ValueChanged<String>? onChanged;
+  final double width;
+  final double height;
+
+  const CustomTextInput2({
+    Key? key,
+    required this.hintText,
+    this.controller,
+    this.obscureText = false,
+    this.keyboardType = TextInputType.text,
+    this.onChanged,
+    this.width = 120,
+    this.height = 45,
+  }) : super(key: key);
+
+
+  static const textInputDecoration = InputDecoration(
+    hintText: "Enter text",
+    hintStyle: TextStyle(color: Colors.black, fontSize: 18),
+    fillColor: Color.fromARGB(255, 255, 255, 255),
+    filled: true,
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color.fromARGB(255, 217, 217, 217)),
+      borderRadius: BorderRadius.all(
+        Radius.circular(8),
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color.fromARGB(255, 252, 163, 17)),
+      borderRadius: BorderRadius.all(
+        Radius.circular(8),
+      ),
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: height,
+      child: TextFormField(
+        controller: controller,
+        obscureText: obscureText,
+        keyboardType: keyboardType,
+        onChanged: onChanged,
+        decoration: textInputDecoration.copyWith(
+          hintText: hintText,
+        ),
+      ),
+    );
+  }
+}
+
+class RoundAddButton extends StatelessWidget {
+  final VoidCallback onPressed; 
+
+  const RoundAddButton({Key? key, required this.onPressed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        shape: const CircleBorder(), 
+        padding: const EdgeInsets.all(10), 
+        backgroundColor: mainColor,
+        foregroundColor: Colors.white, 
+       
+      ),
+      child: const Icon(Icons.add, size: 28), 
+    );
+  }
+}
+
+class CustomTextInput3 extends StatelessWidget {
+  final String hintText;
+  final TextEditingController? controller;
+  final bool obscureText;
+  final TextInputType keyboardType;
+  final ValueChanged<String>? onChanged;
+  final double width;
+  final double height;
+
+  const CustomTextInput3({
+    Key? key,
+    required this.hintText,
+    this.controller,
+    this.obscureText = false,
+    this.keyboardType = TextInputType.text,
+    this.onChanged,
+    this.width = 60,
+    this.height = 35,
+  }) : super(key: key);
+
+
+  static const textInputDecoration = InputDecoration(
+    hintText: "Enter text",
+    hintStyle: TextStyle(color: Colors.black, fontSize: 18),
+    fillColor: Color.fromARGB(255, 255, 255, 255),
+    filled: true,
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color.fromARGB(255, 217, 217, 217)),
+      borderRadius: BorderRadius.all(
+        Radius.circular(8),
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color.fromARGB(255, 252, 163, 17)),
+      borderRadius: BorderRadius.all(
+        Radius.circular(8),
+      ),
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: height,
+      child: TextFormField(
+        controller: controller,
+        obscureText: obscureText,
+        keyboardType: keyboardType,
+        onChanged: onChanged,
+        decoration: textInputDecoration.copyWith(
+          hintText: hintText,
+        ),
+      ),
+    );
+  }
+}
+
+class PCard2 extends StatelessWidget {
+  final String price;
+  final String town;
+  final String starttime;
+  final String duration;
+  final String endtime;
+  final String busnumber;
+  final String seats;
+  final VoidCallback onTap;
+  
+  const PCard2({
+    required this.price, 
+    required this.town, 
+    required this.starttime,
+    required this.duration,
+    required this.endtime,
+    required this.busnumber,
+    required this.seats,
+    required this.onTap
+    });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+    
+        child: Container(
+          height: 150,
+          width: 350,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: Colors.black,
+              width:1,
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'LKR '+price+'.00',
+                      style: BodyText3,
+                    ),
+                  ],
+                ),
+                Text(
+                  town,
+                  style: BodyText4,
+                ),
+                
+                Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5,right: 5),
+                      child: Text(
+                        starttime,
+                        style: BodyText3,
+                      ),
+                    ),
+
+                    Expanded(
+                      child: Divider(
+                        color: Colors.black54, 
+                        thickness: 1,
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5,right: 5),
+                      child: Text(
+                        duration+'h',
+                        style: BodyText3,
+                        ),
+                    ),
+                    
+                    Expanded(
+                      child: Divider(
+                        color: Colors.black54, 
+                        thickness: 1,
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5,right: 5),
+                      child: Text(
+                        endtime,
+                        style: BodyText3,
+                        ),
+                    ),
+                  ],
+                ),
+                Spacer(),
+                Row(
+                  children: [
+                    Text(
+                      busnumber,
+                      style: BodyText5,
+                    ),
+                    Spacer(),
+                    Text(
+                      seats+' Seats available',
+                      style: BodyText5,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+    );
+  }
+}

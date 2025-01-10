@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:triptix/constants.dart';
 
 
 
@@ -14,8 +15,8 @@ class _PaymentGatewayUIState extends State<PaymentGatewayUI> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Payment Gateway'),
-        backgroundColor: Colors.deepPurple,
+        leading: IconButton(onPressed: (){}, icon:Icon(Icons.arrow_back)),
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -115,33 +116,41 @@ class _PaymentGatewayUIState extends State<PaymentGatewayUI> {
             ),
             SizedBox(height: 40),
             Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text('Payment Successful'),
-                        content: Text(
-                          'Your payment using $selectedPaymentMethod has been processed successfully!',
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text('OK'),
+              child: SizedBox(
+                width: 300, 
+                height: 60, 
+                child: ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('Payment Successful'),
+                          content: Text(
+                            'Your payment using $selectedPaymentMethod has been processed successfully!',
                           ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                  textStyle: TextStyle(fontSize: 16),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: mainColor,
+                    foregroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    textStyle: TextStyle(fontSize: 16),
+                  ),
+                  child: Text('Pay Now',style: BodyText4,),
                 ),
-                child: Text('Pay Now'),
               ),
             ),
           ],
@@ -175,7 +184,7 @@ class PaymentMethodButton extends StatelessWidget {
             width: 90,
             decoration: BoxDecoration(
               border: Border.all(
-                color: isSelected ? Colors.deepPurple : Colors.grey,
+                color: isSelected ? mainColor : Colors.grey,
                 width: 2,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -189,7 +198,7 @@ class PaymentMethodButton extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              color: isSelected ? Colors.deepPurple : Colors.black,
+              color: isSelected ? mainColor : Colors.black,
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             ),
           ),
