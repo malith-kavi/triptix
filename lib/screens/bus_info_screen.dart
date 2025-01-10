@@ -62,11 +62,67 @@ class BusInfoScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Bus Number',style: BodyText1,),
-                              SizedBox(height: 5,),
-                              CustomTextInput(hintText: "Ex NE - 3892"),
-                              SizedBox(height: 25,),
+                        Text(
+                          'Bus Number',
+                          style: BodyText1,
+                          ),
+                        SizedBox(height: 10,),
+                        CustomTextInput(hintText: "Ex NE - 3892"),
+                        SizedBox(height: 25,),
+                        Text(
+                          'Route',
+                          style: BodyText1,
+                          ),
+                        SizedBox(height: 25,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text('Start',style: BodyText2,),
+                                SizedBox(height: 10,),
+                                CustomTextInput2(hintText: 'kurunegala'),
+                                SizedBox(height: 20,),
+                                Text('End',style: BodyText2,),
+                                SizedBox(height: 10,),
+                                CustomTextInput2(hintText: 'Colombo'),
+                              ],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text('Start Time',style: BodyText2,),
+                                SizedBox(height: 10,),
+                                CustomTextInput2(hintText: '7.00 AM'),
+                                SizedBox(height: 20,),
+                                Text('End Time',style: BodyText2,),
+                                SizedBox(height: 10,),
+                                CustomTextInput2(hintText: '11.00 PM'),
+                              ],
+                            ),
+                          ],
+
+                        ),
+                        SizedBox(height: 20,),
+                        RoundAddButton(onPressed: (){}),
+                        SizedBox(height: 20,),
+                        Text('Route Number',style: BodyText1,),
+                        SizedBox(height: 20,),
+                        CustomTextInput(hintText: '06'),
+                        SizedBox(height: 20,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text('Number Of Seats',style: BodyText1,),
+                            SizedBox(width: 10,),
+                            CustomTextInput3(hintText: '54'),
+                          ],
+                        ),
+                        SizedBox(height: 30,),
+                        Center(child: CustomButton(text: 'Next', onPressed: (){}))
                         ],
+                      
                     ),
                   ),
                 ),

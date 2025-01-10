@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const bColor = Color.fromARGB(255, 20, 33, 61);
+const mainColor = Color.fromARGB(255, 252, 163, 17);
 
 const HeaderText1 = TextStyle(
   color: Color.fromARGB(255, 255, 255, 255), 
