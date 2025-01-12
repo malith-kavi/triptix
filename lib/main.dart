@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:triptix/screens/booked_screen.dart';
 import 'package:triptix/screens/booking_details_screen.dart';
 import 'package:triptix/screens/booking_screen.dart';
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: PaymentGatewayUI(),
+      builder: EasyLoading.init(),
+      home: LandingScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

@@ -31,27 +31,27 @@ class GetUserDetails {
     };
   }
 
-  // Map<String, dynamic> toFirestore() {
-  //   final data = {
-  //     'name':name,
-  //     'mobileNumber':mobileNumber,
-  //     'nicOrkey':nicOrkey,
-  //     'email':email,
-  //     'userType': userType,
-  //   };
-  //   print("Data to be saved to Firestore: $data");
-  //   return data;
-  // }
+  Map<String, dynamic> toFirestore() {
+    final data = {
+      'name':name,
+      'mobileNumber':mobileNumber,
+      'nicOrkey':nicOrkey,
+      'email':email,
+      'userType': userType,
+    };
+    print("Data to be saved to Firestore: $data");
+    return data;
+  }
 
-  // factory UserDetails.fromFirestore(Map<String, dynamic> data) {
-  //   return UserDetails(
-  //     name: data['name'] ?? '',
-  //     mobileNumber: data['mobileNumber'] ?? '',
-  //     nicOrkey: data['nicOrkey'] ?? '',
-  //     email: data['email'] ?? '',
-  //     userType: data['userType'] ?? '',
-  //   );
-  // }
+  factory GetUserDetails.fromFirestore(Map<String, dynamic> data) {
+    return GetUserDetails(
+      name: data['name'] ?? '',
+      mobileNumber: data['mobileNumber'] ?? '',
+      nicOrkey: data['nicOrkey'] ?? '',
+      email: data['email'] ?? '',
+      userType: data['userType'] ?? '',
+    );
+  }
 
   
 }

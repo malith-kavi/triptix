@@ -38,33 +38,42 @@ class AuthServices {
 
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      User? user = result.user;
+      await _auth.createUserWithEmailAndPassword(
+          email: email, password: password).then((UserCredential userCredential){
+            return userCredential.user?.uid;
+          }).catchError((onError){
+            print(onError.toString());
+          });
       // You can save additional user data like username and birthday to Firebase Firestore or Realtime Database here
-      return _userWithFirebaseUserid(user);
+      // return _userWithFirebaseUserid(user);
+
     } catch (err) {
       print(err.toString());
       return null;
     }
   }
 
-  // Future<void> storeData(
-  //     String docId, String name, String mobileNumber, String nic, String email)
-  //   final _firestore = FirebaseFirestore.instance;
+  Future<void> storeData(
+      String docId, String name, String mobileNumber, String nic, String email)async{
+        try{
+          final _firestore = FirebaseFirestore.instance;
 
-  //   DocumentReference<Map<String, dynamic>> users = _firestore.collection("user_details").doc(docId);
+          DocumentReference<Map<String, dynamic>> users = _firestore.collection('user_details').doc(docId);
 
-  //   var myJSONObj = {
-  //     "Name": name,
-  //     "MobileNumber": mobileNumber,
-  //     "nicOrkey": nic,
-  //     "email": email,
-  //     "userType": "driver",
-  //   };
-  //   users.set(myJSONObj).then((value) => print("user data add to the database")).catchError((error) => print("Failed to add user: $error"));
-
-
+         var myJSONObj = {
+            "Name": name,
+            "MobileNumber": mobileNumber,
+            "nicOrkey": nic,
+            "email": email,
+            "userType": "driver",
+          };
+          await users.set(myJSONObj);
+          print("User data Added to the Firestore database");
+        }catch (error) {
+          print("Failed to add user to FireStore: $error");
+        }
+      }
+    
   
 
 
