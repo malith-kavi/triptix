@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'package:triptix/models/user_details.dart';
 
 
@@ -36,19 +34,12 @@ class AuthServices {
   }
 
 
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future<User?> registerWithEmailAndPassword(String email, String password) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
-          email: email, password: password).then((UserCredential userCredential){
-            return userCredential.user?.uid;
-          }).catchError((onError){
-            print(onError.toString());
-          });
-      // You can save additional user data like username and birthday to Firebase Firestore or Realtime Database here
-      // return _userWithFirebaseUserid(user);
-
-    } catch (err) {
-      print(err.toString());
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+      return userCredential.user;
+    } catch (e) {
+      print("Error: ${e.toString()}");
       return null;
     }
   }

@@ -1,24 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:triptix/constants.dart';
+import 'package:triptix/screens/your_booking_screen.dart';
 import 'package:triptix/widgets/widgets.dart';
 
 var logo = 'assets/images/logo.png';
 
 class DriverViewBus extends StatefulWidget {
-  const DriverViewBus({super.key});
+  const DriverViewBus({super.key,required this.seatCount,required this.date,required this.documentId,required this.blockedSheetCount});
+  final String? seatCount;
+  final String? documentId;
+  final String? date;
+  final String? blockedSheetCount;
 
   @override
   State<DriverViewBus> createState() => _DriverViewBusState();
 }
-var date = 'Date';
 
 class _DriverViewBusState extends State<DriverViewBus> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back_outlined)),
-        title: Text(date),
+        automaticallyImplyLeading: false,
+        title: Text("Date: ${widget.date}"),
         backgroundColor: Colors.white,
       ),
       backgroundColor: Colors.white,
@@ -54,7 +60,7 @@ class _DriverViewBusState extends State<DriverViewBus> {
                               ),
                               child: Icon(
                                 Icons.square_rounded,
-                                color: Colors.white,
+                                color: Colors.green,
                                 size: 15,
                               ),
                             ),
@@ -64,8 +70,6 @@ class _DriverViewBusState extends State<DriverViewBus> {
                         ),
                         
                         SizedBox(width: 20,),
-                        
-                        
                       ],
                     ),
                   ],
@@ -90,9 +94,11 @@ class _DriverViewBusState extends State<DriverViewBus> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        BusLayout(),
+                        SingleChildScrollView(child: BusLayout(seatCount: widget.seatCount??'0',blockedSheetCount: widget.blockedSheetCount??'0',)),
                         SizedBox(height: 20,),
-                        CustomButton(text: 'Stop Booking Now', onPressed: (){}),
+                        CustomButton(text: 'Stop Booking Now', onPressed: (){
+                          stopBooking();
+                        }),
                         SizedBox(height: 10,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -100,7 +106,9 @@ class _DriverViewBusState extends State<DriverViewBus> {
                             IconButton(
                               icon:Icon(Icons.delete_sweep_rounded,
                               color: Colors.white,),
-                              onPressed: (){}),
+                              onPressed: (){
+                                deleteBooking();
+                              }),
                           ],
                         )
                       ]
@@ -112,5 +120,42 @@ class _DriverViewBusState extends State<DriverViewBus> {
         ],
       ),
     );
+  }
+
+  stopBooking() async {
+    EasyLoading.show(status: "Stop Booking......");
+    EasyLoading.instance.indicatorType=EasyLoadingIndicatorType.cubeGrid;
+    final _firestore = FirebaseFirestore.instance;
+
+    DocumentReference<Map<String, dynamic>> users = _firestore.collection('bus_trip_details').doc(widget.documentId);
+
+    var myJSONObj = {
+      "bus_booking_status":"inactive",
+    };
+    await users.update(myJSONObj).then((onValue){
+      EasyLoading.dismiss();
+      EasyLoading.showSuccess("Stoped");
+      print("User data Added to the Firestore database");
+    }).catchError((onError){
+      EasyLoading.dismiss();
+      EasyLoading.showError("Failed");
+      print("Error $onError");
+    });
+  }
+
+  deleteBooking(){
+    EasyLoading.show(status: "Deleting......");
+    EasyLoading.instance.indicatorType=EasyLoadingIndicatorType.cubeGrid;
+    final _firestore = FirebaseFirestore.instance;
+
+    _firestore.collection('bus_trip_details').doc(widget.documentId).delete().then((onValue){
+      EasyLoading.dismiss();
+      EasyLoading.showSuccess("Deleted");
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => YourBookingScreen(),));
+    }).catchError((onError){
+      EasyLoading.dismiss();
+      EasyLoading.showError("Failed");
+      print(onError);
+    });
   }
 }
