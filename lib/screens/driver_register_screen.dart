@@ -5,8 +5,6 @@ import 'package:triptix/services/firebase_auth_services.dart';
 import 'package:triptix/widgets/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import 'bus_info_screen.dart';
-
 var logo = 'assets/images/logo.png';
 
 class DriverRegisterScreen extends StatefulWidget {

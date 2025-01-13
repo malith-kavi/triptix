@@ -64,6 +64,27 @@ class AuthServices {
           print("Failed to add user to FireStore: $error");
         }
       }
+
+  Future<void> storeUserData(
+      String docId, String name, String mobileNumber, String nic, String email)async{
+    try{
+      final _firestore = FirebaseFirestore.instance;
+
+      DocumentReference<Map<String, dynamic>> users = _firestore.collection('user_details').doc(docId);
+
+      var myJSONObj = {
+        "Name": name,
+        "MobileNumber": mobileNumber,
+        "nicOrkey": nic,
+        "email": email,
+        "userType": "passenger",
+      };
+      await users.set(myJSONObj);
+      print("User data Added to the Firestore database");
+    }catch (error) {
+      print("Failed to add user to FireStore: $error");
+    }
+  }
     
   
 

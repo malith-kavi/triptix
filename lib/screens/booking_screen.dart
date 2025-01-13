@@ -5,7 +5,15 @@ import 'package:triptix/widgets/widgets.dart';
 var logo = 'assets/images/logo.png';
 
 class BookingScreen extends StatefulWidget {
-  const BookingScreen({super.key});
+  const BookingScreen({super.key,required this.startPlace,required this.ticketPrice,required this.startTime,required this.endTime,required this.busNumber,required this.availableSeat,required this.totalSeat,required this.id});
+  final String? id;
+  final String? startPlace;
+  final String? ticketPrice;
+  final String? startTime;
+  final String? endTime;
+  final String? busNumber;
+  final String? availableSeat;
+  final String? totalSeat;
 
   @override
   State<BookingScreen> createState() => _DriverViewBusState();
@@ -53,7 +61,7 @@ class _DriverViewBusState extends State<BookingScreen> {
                               ),
                               child: Icon(
                                 Icons.square_rounded,
-                                color: Colors.white,
+                                color: Colors.green,
                                 size: 15,
                               ),
                             ),
@@ -68,7 +76,7 @@ class _DriverViewBusState extends State<BookingScreen> {
                       ],
                     ),
                     SizedBox(height: 5,),
-                    PCard2(price: 'RS.500.00', town: 'Kurunegala', starttime: '7.00 AM', duration: '1h 30min', endtime: '8.30 AM', busnumber: 'NE - 8760', seats: '54', onTap: (){}),
+                    PCard2(price: widget.ticketPrice??"Price", town: widget.startPlace??"Town", starttime: widget.startTime??"Start Time", duration: "to", endtime: widget.endTime??"End Time", busnumber: widget.busNumber??"Bus Number", seats: widget.availableSeat??"", onTap: (){}),
                     SizedBox(height: 5,),
                   ],
                   
@@ -94,19 +102,7 @@ class _DriverViewBusState extends State<BookingScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(height: 20,),
-                        BusLayout(),
-                        SizedBox(height: 20,),
-                        CustomButton(text: 'Book Now', onPressed: (){}),
-                        SizedBox(height: 10,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              icon:Icon(Icons.delete_sweep_rounded,
-                              color: Colors.white,),
-                              onPressed: (){}),
-                          ],
-                        )
+                        BusLayout2(id:widget.id??"",blockedSheetCount: (int.parse(widget.totalSeat??"0")-int.parse(widget.availableSeat??"0")).toString(),seatCount: widget.totalSeat??"0",),
                       ]
                     ),
                   ),

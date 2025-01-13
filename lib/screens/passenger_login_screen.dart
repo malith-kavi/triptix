@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:triptix/constants.dart';
 import 'package:triptix/screens/passenger_register_screen.dart';
 import 'package:triptix/widgets/widgets.dart';
 
+import '../services/firebase_auth_services.dart';
+import 'bus_search_screen.dart';
+
 var logo = 'assets/images/logo.png';
 
-class PassengerLoginScreen extends StatelessWidget {
+class PassengerLoginScreen extends StatefulWidget {
   const PassengerLoginScreen({super.key});
+
+  @override
+  State<PassengerLoginScreen> createState() => _PassengerLoginScreenState();
+}
+
+class _PassengerLoginScreenState extends State<PassengerLoginScreen> {
+
+  final TextEditingController emailController = TextEditingController();
+
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +29,7 @@ class PassengerLoginScreen extends StatelessWidget {
       body: Column(
         children: [
           SafeArea(
-            child: Container(  
+            child: Container(
               color: Colors.white,
                 child: Center(
                   child:Padding(
@@ -29,7 +43,7 @@ class PassengerLoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
-  
+
           Expanded(
             child:Container(
               decoration: const BoxDecoration(
@@ -45,7 +59,7 @@ class PassengerLoginScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        
+
                         Text(
                           ' WELCOME',
                           style: HeaderText2,
@@ -65,13 +79,15 @@ class PassengerLoginScreen extends StatelessWidget {
                               children: [
                                 Text('Email',style: BodyText1,),
                                 SizedBox(height: 5,),
-                                CustomTextInput(hintText: "Enter your Email"),
+                                CustomTextInput(hintText: "Enter your Email",controller: emailController,),
                                 SizedBox(height: 25,),
                                 Text('Password',style: BodyText1,),
                                 SizedBox(height: 5,),
-                                CustomTextInput(hintText: 'Enter your Password'),
+                                CustomTextInput(hintText: 'Enter your Password',controller: passwordController,),
                                 SizedBox(height: 25,),
-                                CustomButton(text: 'Sign In', onPressed: (){}),
+                                CustomButton(text: 'Sign In', onPressed: (){
+                                  login(context);
+                                }),
                                 SizedBox(height: 10,),
                                 SButton(text: 'Forgot password?', onPressed: (){})
                               ],
@@ -84,14 +100,14 @@ class PassengerLoginScreen extends StatelessWidget {
                           children: [
                             Text('Don’t have an account ?',style: BodyText2,),
                             SButton(
-                              text: 'Sign Up', 
+                              text: 'Sign Up',
                               onPressed: (){
                                 Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) => PassengerRegisterScreen()));
                               })
                           ],
                         ),
-                        
+
                     ],
                   ),
                 ),
@@ -101,5 +117,26 @@ class PassengerLoginScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  login(BuildContext context) async{
+    EasyLoading.show(status: "Login......",);
+    EasyLoading.instance..indicatorType = EasyLoadingIndicatorType.cubeGrid;
+    await AuthServices().signInWithEmailAndPassword(emailController.text.trim().toString(), passwordController.text.trim().toString()).then((onValue){
+      if(onValue == null){
+        EasyLoading.dismiss();
+        EasyLoading.showError("Login failed!");
+        return true;
+      }
+      else{
+        EasyLoading.dismiss();
+        EasyLoading.showSuccess("Login Successfull!");
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => BusSearchScreen()),ModalRoute.withName("/"));
+      }
+    }).catchError((onError){
+      EasyLoading.dismiss();
+      EasyLoading.showError("Login Failed! Try Again.");
+      print(onError);
+    });
   }
 }
