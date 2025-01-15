@@ -1,11 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:triptix/constants.dart';
+import 'package:triptix/screens/your_booking_screen.dart';
 import 'package:triptix/widgets/widgets.dart';
 
 var logo = 'assets/images/logo.png';
 
-class BusTimeSchedule extends StatelessWidget {
-  const BusTimeSchedule({super.key});
+class BusTimeSchedule extends StatefulWidget {
+  const BusTimeSchedule({super.key,required this.docID});
+  final String? docID;
+
+  @override
+  State<BusTimeSchedule> createState() => _BusTimeScheduleState();
+}
+
+class _BusTimeScheduleState extends State<BusTimeSchedule> {
+
+  late final TextEditingController ticketPrice = TextEditingController();
+  late final TextEditingController availableDate= TextEditingController();
+  late final TextEditingController yourRoute= TextEditingController();
+  late final TextEditingController blockSeatNumber = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +29,7 @@ class BusTimeSchedule extends StatelessWidget {
       body: Column(
         children: [
           SafeArea(
-            child: Container(  
+            child: Container(
               color: Colors.white,
                 child: Center(
                   child:Padding(
@@ -28,7 +43,7 @@ class BusTimeSchedule extends StatelessWidget {
                   ),
                 ),
               ),
-  
+
           Expanded(
             child:Container(
               decoration: const BoxDecoration(
@@ -42,7 +57,7 @@ class BusTimeSchedule extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(20, 40, 20, 25),
                   child: SingleChildScrollView(
                     child: Column(
-                      
+
                       children: [
                         Text(
                           'BUS TIME SCHEDULE',
@@ -63,26 +78,23 @@ class BusTimeSchedule extends StatelessWidget {
                               children: [
                                 Text('Ticket Price',style: BodyText1,),
                                 SizedBox(height: 5,),
-                                CustomTextInput(hintText: "500.00"),
+                                CustomTextInput(hintText: "500.00",controller: ticketPrice,),
                                 SizedBox(height: 15,),
                                 Text('Available Dates',style: BodyText1,),
                                 SizedBox(height: 5,),
-                                CustomTextInput(hintText: 'Date'),
-                                SizedBox(height: 5,),
-                                
-                                CustomTextInput(hintText: ""),
-                                SizedBox(height: 5,),
-                                CustomTextInput(hintText: ''),
+                                CustomTextInput(hintText: 'Date',controller: availableDate,),
                                 SizedBox(height: 15,),
                                 Text('Your Route',style: BodyText1,),
                                 SizedBox(height: 5,),
-                                CustomTextInput(hintText: "Select Route"),
+                                CustomTextInput(hintText: "Select Route",controller: yourRoute,),
                                 SizedBox(height: 15,),
                                 Text('Blocked Seat Numbers',style: BodyText1,),
                                 SizedBox(height: 5,),
-                                CustomTextInput(hintText: 'Seats'),
+                                CustomTextInput(hintText: 'Seats',controller: blockSeatNumber,),
                                 SizedBox(height: 25,),
-                                CustomButton(text: 'Publish', onPressed: (){}),
+                                CustomButton(text: 'Publish', onPressed: (){
+                                  submitData();
+                                }),
                               ],
                             ),
                         ),
@@ -96,5 +108,32 @@ class BusTimeSchedule extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  submitData()async{
+    EasyLoading.show(status: "Publishing bus details......");
+    EasyLoading.instance.indicatorType=EasyLoadingIndicatorType.cubeGrid;
+    final _firestore = FirebaseFirestore.instance;
+
+    DocumentReference<Map<String, dynamic>> users = _firestore.collection('bus_trip_details').doc(widget.docID);
+
+    var myJSONObj = {
+      "ticket_price":ticketPrice.text.trim()== ""?EasyLoading.showToast("Failed"):ticketPrice.text.trim(),
+      "available_date": availableDate.text.trim() == ""?EasyLoading.showToast("Failed"):availableDate.text.trim(),
+      "your_route": yourRoute.text.trim()== ""?EasyLoading.showToast("Failed"):yourRoute.text.trim(),
+      "block_seat_number": blockSeatNumber.text.trim()== ""?EasyLoading.showToast("Failed"):blockSeatNumber.text.trim(),
+      "bus_booking_status":"active",
+    };
+    await users.update(myJSONObj).then((onValue){
+      EasyLoading.dismiss();
+      EasyLoading.showSuccess("Successful");
+      print("User data Added to the Firestore database");
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => YourBookingScreen(),));
+    }).catchError((onError){
+      EasyLoading.dismiss();
+      EasyLoading.showError("Failed");
+      print("Error $onError");
+    });
+
   }
 }

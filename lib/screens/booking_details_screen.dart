@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:triptix/constants.dart';
+import 'package:triptix/screens/payment_screen.dart';
 import 'package:triptix/widgets/widgets.dart';
 
 var logo = 'assets/images/logo.png';
@@ -84,7 +85,9 @@ class BookingDetailsScreen extends StatelessWidget {
                                 SizedBox(height: 5,),
                                 CustomTextInput(hintText: "Seat Number"),
                                 SizedBox(height: 25,),
-                                CustomButton(text: 'PAY', onPressed: (){}),
+                                CustomButton(text: 'PAY', onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentGatewayUI(),));
+                                }),
                               ],
                             ),
                         ),

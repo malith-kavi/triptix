@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:triptix/constants.dart';
+import 'package:triptix/screens/route_results_screen.dart';
 import 'package:triptix/widgets/widgets.dart';
 
 var logo = 'assets/images/logo.png';
 
-class BusSearchScreen extends StatelessWidget {
+class BusSearchScreen extends StatefulWidget {
   const BusSearchScreen({super.key});
 
+  @override
+  State<BusSearchScreen> createState() => _BusSearchScreenState();
+}
+
+class _BusSearchScreenState extends State<BusSearchScreen> {
+
+  TextEditingController from = TextEditingController();
+  TextEditingController to = TextEditingController();
+  TextEditingController date = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +24,7 @@ class BusSearchScreen extends StatelessWidget {
       body: Column(
         children: [
           SafeArea(
-            child: Container(  
+            child: Container(
               color: Colors.white,
                 child: Center(
                   child:Padding(
@@ -28,7 +38,7 @@ class BusSearchScreen extends StatelessWidget {
                   ),
                 ),
               ),
-  
+
           Expanded(
             child:Container(
               decoration: const BoxDecoration(
@@ -42,9 +52,9 @@ class BusSearchScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(20, 40, 20, 25),
                     child: Column(
-                      
+
                       children: [
-                        //Spacer(),                      
+                        //Spacer(),
                         SizedBox(height: 10,),
                         Container(
                           decoration: BoxDecoration(
@@ -63,7 +73,7 @@ class BusSearchScreen extends StatelessWidget {
                                 SizedBox(height: 5,),
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(15, 0, 50, 0),
-                                  child: TextField(style: TextStyle(color: Colors.white),),
+                                  child: TextField(style: TextStyle(color: Colors.white),controller: from,),
                                 ),
                                 SizedBox(height: 20,),
                                 Row(
@@ -78,22 +88,22 @@ class BusSearchScreen extends StatelessWidget {
                                 SizedBox(height: 5,),
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(15, 0, 50, 0),
-                                  child: TextField(style: TextStyle(color: Colors.white),),
+                                  child: TextField(style: TextStyle(color: Colors.white),controller: to,),
                                 ),
                                 SizedBox(height: 25,),
-                            
+
                               ],
                             ),
                             ),
                         ),
-                        SizedBox(height: 25,),                     
-                        CustomTextInput(hintText: 'Data Selection'),
-                        SizedBox(height: 20,),
-                        CustomTextInput(hintText: 'Passenger Count'),
+                        SizedBox(height: 25,),
+                        CustomTextInput(hintText: 'Date Selection',controller: date,),
                         SizedBox(height: 40,),
-                        CustomButton(text: 'Search', onPressed: (){}),
-                  
-                  
+                        CustomButton(text: 'Search', onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => RouteResultsScreen(date: date.text.trim(),from: from.text.trim(),to: to.text.trim(),),));
+                        }),
+
+
                         //Spacer(),
                         SizedBox(height: 20,)
                       ],
@@ -106,4 +116,6 @@ class BusSearchScreen extends StatelessWidget {
       ),
     );
   }
+
+
 }

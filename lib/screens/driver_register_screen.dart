@@ -212,19 +212,22 @@ final _formKey = GlobalKey<FormState>();
       EasyLoading.show(status: "Registering......",);
       EasyLoading.instance..indicatorType = EasyLoadingIndicatorType.cubeGrid;
       await _auth.registerWithEmailAndPassword(
-        emailController.text.trim(),
-        passwordController.text.trim(),
+        emailController.text.trim().toString(),
+        passwordController.text.trim().toString(),
       ).then((onValue)async{
-        EasyLoading.showToast(onValue,toastPosition: EasyLoadingToastPosition.bottom);
+        if(onValue == null){
+          EasyLoading.showError("Registration Failed! Try Again.");
+          return true;
+        }
         await _auth.storeData(
-          onValue,
-          nameController.text.trim(), 
-          mobileNumberController.text.trim(), 
-          nicController.text.trim(), 
+          onValue!.uid,
+          nameController.text.trim(),
+          mobileNumberController.text.trim(),
+          nicController.text.trim(),
           emailController.text.trim(),).then(((onValue){
             EasyLoading.dismiss();
             EasyLoading.showSuccess("Registration Successfull!");
-            Navigator.push(context, MaterialPageRoute(builder: (context) => YourBookingScreen()),);
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => YourBookingScreen()),ModalRoute.withName("/"));
           })).catchError((onError){
             EasyLoading.dismiss();
             EasyLoading.showError("Registration Failed! Try Again.");

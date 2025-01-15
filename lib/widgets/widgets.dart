@@ -1,5 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:triptix/constants.dart';
+
+import '../screens/booking_details_screen.dart';
 
 class CustomCard extends StatelessWidget {
   final IconData icon;
@@ -174,6 +179,7 @@ class PCard extends StatelessWidget {
   final String busnumber;
   final String seats;
   final VoidCallback onTap;
+  final String id;
   
   const PCard({
     required this.price, 
@@ -183,7 +189,8 @@ class PCard extends StatelessWidget {
     required this.endtime,
     required this.busnumber,
     required this.seats,
-    required this.onTap
+    required this.onTap,
+    required this. id,
     });
 
   @override
@@ -239,7 +246,7 @@ class PCard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 5,right: 5),
                       child: Text(
-                        duration+'h',
+                        duration,
                         style: BodyText3,
                         ),
                     ),
@@ -367,7 +374,7 @@ class ConfirmCard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 5,right: 5),
                       child: Text(
-                        duration+'h',
+                        duration,
                         style: BodyText3,
                         ),
                     ),
@@ -414,798 +421,190 @@ class ConfirmCard extends StatelessWidget {
 class BusLayout extends StatelessWidget {
   final double height;
   final double width;
-  final VoidCallback? onChairTap; 
+  final VoidCallback? onChairTap;
+  final String seatCount;
+  final String blockedSheetCount;
 
   BusLayout({
     this.height = 600,
     this.width = 320,
     this.onChairTap,
+    this.seatCount = '0',
+    this.blockedSheetCount = '0',
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height,
-      width: width,
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(24, 255, 255, 255),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              Spacer(),
-              IconButton(onPressed: (){}, icon: Icon(Icons.person,size: 30,color: Colors.white,)),
-              SizedBox(height: 10,),
-            ],
+      height: MediaQuery.of(context).size.height,
+      child: GridView.builder(
+        shrinkWrap: true,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 5, // Number of seats per row
+            crossAxisSpacing: 0, // Spacing between columns
+            mainAxisSpacing: 0,
+            // Spacing between rows
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
+        itemCount: int.parse(seatCount),
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              print("Seat ${index + 1} tapped");
+            },
+            child: Center(
+              child: Column(
+                children: [
+                  index+1<=int.parse(blockedSheetCount)?Icon(
+                    Icons.event_seat,
+                    color: Colors.red,
+                    size: 24.0,
+                  ):Icon(
+                    Icons.event_seat,
+                    color: Colors.green,
+                    size: 24.0,
+                  ),
+                  SizedBox(height: 2,),
+                  Text("${index+1}",style: TextStyle(color: Colors.white),),
+                ],
               ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: null, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.transparent),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: null, 
-                icon: Icon(Icons.chair,size: 30,color:Colors.transparent),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-            ],
-          ),
-        ],
+            ),
+          );
+        },
       ),
     );
   }
 }
 
-class BusLayout2 extends StatelessWidget {
+class BusLayout2 extends StatefulWidget {
+  final String id;
   final double height;
   final double width;
-  final VoidCallback? onChairTap; // Optional callback for chair button
+  final VoidCallback? onChairTap;
+  final String seatCount;
+  final String blockedSheetCount;
 
   BusLayout2({
+    required this.id,
     this.height = 600,
     this.width = 320,
     this.onChairTap,
+    this.seatCount = '0',
+    this.blockedSheetCount = '0',
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: height,
-      width: width,
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(24, 255, 255, 255),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              Spacer(),
-              IconButton(onPressed: (){}, icon: Icon(Icons.person,size: 30,color: Colors.white,)),
-              SizedBox(height: 10,),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: null, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.transparent),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: null, 
-                icon: Icon(Icons.chair,size: 30,color:Colors.transparent),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+  State<BusLayout2> createState() => _BusLayout2State();
 }
 
-class BusLayout3 extends StatelessWidget {
-  final double height;
-  final double width;
-  final VoidCallback? onChairTap; // Optional callback for chair button
-
-  BusLayout3({
-    this.height = 600,
-    this.width = 320,
-    this.onChairTap,
-  });
-
+class _BusLayout2State extends State<BusLayout2> {
+  List<int> bookSeat = [];
+  bool isCLicked = false;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height,
-      width: width,
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(24, 255, 255, 255),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              Spacer(),
-              IconButton(onPressed: (){}, icon: Icon(Icons.person,size: 30,color: Colors.white,)),
-              SizedBox(height: 10,),
-            ],
+    return Column(
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.height,
+          child: GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 5, // Number of seats per row
+              crossAxisSpacing: 0, // Spacing between columns
+              mainAxisSpacing: 0,
+              // Spacing between rows
+            ),
+            itemCount: int.parse(widget.seatCount),
+            itemBuilder: (context, index) {
+              if(index+1<=int.parse(widget.blockedSheetCount)){
+                return Center(
+                  child: Column(
+                    children: [
+                      index+1<=int.parse(widget.blockedSheetCount)?Icon(
+                        Icons.event_seat,
+                        color: Colors.red,
+                        size: 24.0,
+                      ):Icon(
+                        Icons.event_seat,
+                        color: Colors.green,
+                        size: 24.0,
+                      ),
+                      SizedBox(height: 2,),
+                      Text("${index+1}",style: TextStyle(color: Colors.white),),
+                    ],
+                  ),
+                );
+              }
+              else{
+                return GestureDetector(
+                  onTap: () {
+                    if(bookSeat.contains(index+1)){
+                        bookSeat.remove(index+1);
+                        print("Seat ${index + 1} tapped");
+                        print(bookSeat);
+                        setState(() {
+                          isCLicked = false;
+                        });
+                    }
+                    else{
+                      bookSeat.add(index + 1);
+                      print("Seat ${index + 1} tapped");
+                      print(bookSeat);
+                      setState(() {
+                        isCLicked = true;
+                      });
+                    }
+                  },
+                  child: Center(
+                    child: Column(
+                      children: [
+                        bookSeat.contains(index + 1)?Icon(
+                          Icons.event_seat,
+                          color: Colors.red,
+                          size: 24.0,
+                        ):Icon(
+                          Icons.event_seat,
+                          color: Colors.green,
+                          size: 24.0,
+                        ),
+                        SizedBox(height: 2,),
+                        Text("${index+1}",style: TextStyle(color: Colors.white),),
+                      ],
+                    ),
+                  ),
+                );
+              }
+            },
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color:Colors.white),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {},
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-              IconButton(
-                onPressed: onChairTap ?? () {}, 
-                icon: Icon(Icons.chair,size: 30,color: Colors.white,),
-              ),
-            ],
-          ),
-        ],
-      ),
+        ),
+        SizedBox(height: 10,),
+        CustomButton(text: 'Book Now', onPressed: (){
+          saveBookedSeats(bookSeat);
+        }),
+        SizedBox(height: 10,),
+      ],
     );
+  }
+
+  saveBookedSeats(List<int> bookedSheets)async{
+    EasyLoading.show(status: "Publishing booking details......");
+    EasyLoading.instance.indicatorType=EasyLoadingIndicatorType.cubeGrid;
+    final _firestore = FirebaseFirestore.instance;
+
+    DocumentReference<Map<String, dynamic>>users = _firestore.collection('user_ride_details').doc(FirebaseAuth.instance.currentUser!.uid).collection('ride_details').doc();
+      var myJSONObj = {
+        "bus_details_id":widget.id,
+        "booked_sheet":bookedSheets,
+      };
+      await users.set(myJSONObj).then((onValue){
+        EasyLoading.dismiss();
+        EasyLoading.showSuccess("Successful");
+        print("User data Added to the Firestore database");
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BookingDetailsScreen(),));
+      }).catchError((onError){
+        EasyLoading.dismiss();
+        EasyLoading.showError("Failed");
+        print("Error $onError");
+      });
   }
 }
 
@@ -1347,7 +746,7 @@ class CustomTextInput3 extends StatelessWidget {
   }
 }
 
-class PCard2 extends StatelessWidget {
+class PCard2 extends StatefulWidget {
   final String price;
   final String town;
   final String starttime;
@@ -1369,9 +768,14 @@ class PCard2 extends StatelessWidget {
     });
 
   @override
+  State<PCard2> createState() => _PCard2State();
+}
+
+class _PCard2State extends State<PCard2> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-    
+
         child: Container(
           height: 150,
           width: 350,
@@ -1393,16 +797,16 @@ class PCard2 extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      'LKR '+price+'.00',
+                      'LKR '+widget.price+'.00',
                       style: BodyText3,
                     ),
                   ],
                 ),
                 Text(
-                  town,
+                  widget.town,
                   style: BodyText4,
                 ),
-                
+
                 Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -1410,14 +814,14 @@ class PCard2 extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 5,right: 5),
                       child: Text(
-                        starttime,
+                        widget.starttime,
                         style: BodyText3,
                       ),
                     ),
 
                     Expanded(
                       child: Divider(
-                        color: Colors.black54, 
+                        color: Colors.black54,
                         thickness: 1,
                       ),
                     ),
@@ -1425,14 +829,14 @@ class PCard2 extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 5,right: 5),
                       child: Text(
-                        duration+'h',
+                        widget.duration,
                         style: BodyText3,
                         ),
                     ),
-                    
+
                     Expanded(
                       child: Divider(
-                        color: Colors.black54, 
+                        color: Colors.black54,
                         thickness: 1,
                       ),
                     ),
@@ -1440,7 +844,7 @@ class PCard2 extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 5,right: 5),
                       child: Text(
-                        endtime,
+                        widget.endtime,
                         style: BodyText3,
                         ),
                     ),
@@ -1450,12 +854,12 @@ class PCard2 extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      busnumber,
+                      widget.busnumber,
                       style: BodyText5,
                     ),
                     Spacer(),
                     Text(
-                      seats+' Seats available',
+                      widget.seats+' Seats available',
                       style: BodyText5,
                     ),
                   ],

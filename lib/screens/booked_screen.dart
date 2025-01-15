@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:triptix/constants.dart';
 import 'package:triptix/widgets/widgets.dart';
 
@@ -56,9 +59,39 @@ class BookedScreen extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: 20,),
-                        ConfirmCard(price: '200', town: 'colombo', starttime: '8.00', duration: '0.45', endtime: '8.45', busnumber: 'ND - 4532', seatnumber: '56', onTap: (){}),
-                        SizedBox(height: 10,),
-                        ConfirmCard(price: '200', town: 'colombo', starttime: '8.00', duration: '0.45', endtime: '8.45', busnumber: 'ND - 4532', seatnumber: '56', onTap: (){}),
+                        Container(
+                          height: MediaQuery.sizeOf(context).height,
+                          child: FutureBuilder(future: getDocumentById(), builder: (context, snapshot) {
+                            if(snapshot.connectionState == ConnectionState.waiting){
+                              EasyLoading.show(status: "Loading Please Wait");
+                              return SizedBox();
+                            }
+                            else if(snapshot.hasError){
+                              EasyLoading.dismiss();
+                              EasyLoading.showError("Failed");
+                              return SizedBox();
+                            }
+                            else if(snapshot.data!.isEmpty){
+                              EasyLoading.dismiss();
+                              EasyLoading.showError("No Data");
+                              return SizedBox();
+                            }
+                            else{
+                              EasyLoading.dismiss();
+                              return SizedBox(
+                                child: ListView.builder(itemCount: snapshot.data!.length,itemBuilder: (context, index) {
+                                  return Column(
+                                    children: [
+                                      Container(child: customCard(snapshot.data!.elementAt(index)['id'],context,snapshot.data!.elementAt(index)['ticket_price'], snapshot.data!.elementAt(index)['start_place'], snapshot.data!.elementAt(index)['start_time'], 'to', snapshot.data!.elementAt(index)['end_time'], snapshot.data!.elementAt(index)['bus_number'], snapshot.data!.elementAt(index)['numof_seat'], snapshot.data!.elementAt(index)['block_seat_number'])),
+                                    ],
+                                  );
+                                },
+                                ),
+                              );
+                            }
+                          },
+                          ),
+                        ),
                       ],
                   ),
                   ),
@@ -69,4 +102,41 @@ class BookedScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget customCard(String docId,BuildContext context,String price,String town,String starttime,String duration, String endtime, String busnumber, String seatnumber, String blockSheetCount){
+    return Column(
+      children: [
+        SizedBox(height: 10,),
+        ConfirmCard(price: price, town: town, starttime: starttime, duration: duration, endtime: endtime, busnumber: busnumber, seatnumber: seatnumber, onTap: (){}),
+      ],
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getDocumentById() async{
+    List<Map<String, dynamic>> busDetails=[];
+
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('user_ride_details')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('ride_details')
+        .get();
+
+    List<Map<String, dynamic>> documents = querySnapshot.docs
+        .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
+        .toList();
+
+    documents.forEach((doc) async {
+      querySnapshot = await FirebaseFirestore.instance
+          .collection('bus_trip_details')
+          .get();
+
+      busDetails = querySnapshot.docs
+          .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
+          .toList();
+    });
+
+    print(busDetails);
+    return busDetails;
+  }
+
 }

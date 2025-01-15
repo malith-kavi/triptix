@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:triptix/constants.dart';
 
+import 'booked_screen.dart';
+
 
 
 class PaymentGatewayUI extends StatefulWidget {
@@ -133,6 +135,7 @@ class _PaymentGatewayUIState extends State<PaymentGatewayUI> {
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => BookedScreen(),));
                               },
                               child: Text('OK'),
                             ),
