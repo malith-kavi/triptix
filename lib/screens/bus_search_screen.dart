@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:triptix/constants.dart';
 import 'package:triptix/screens/route_results_screen.dart';
+import 'package:triptix/screens/your_booking_screen.dart';
 import 'package:triptix/widgets/widgets.dart';
+
+import 'booked_screen.dart';
 
 var logo = 'assets/images/logo.png';
 
@@ -98,14 +101,19 @@ class _BusSearchScreenState extends State<BusSearchScreen> {
                         ),
                         SizedBox(height: 25,),
                         CustomTextInput(hintText: 'Date Selection',controller: date,),
-                        SizedBox(height: 40,),
+                        SizedBox(height: 50,),
                         CustomButton(text: 'Search', onPressed: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context) => RouteResultsScreen(date: date.text.trim(),from: from.text.trim(),to: to.text.trim(),),));
+                        }),
+                        SizedBox(height: 30,),
+
+                        CustomButton(text: 'My Bookings', onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => BookedScreen()));
                         }),
 
 
                         //Spacer(),
-                        SizedBox(height: 20,)
+                        SizedBox(height: 20,),
                       ],
                     ),
                   ),

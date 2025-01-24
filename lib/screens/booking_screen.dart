@@ -23,7 +23,7 @@ class BookingScreen extends StatefulWidget {
 
 class _DriverViewBusState extends State<BookingScreen> {
 
-  loadFirebase() async {
+  Future<void> loadFirebase() async {
     await getDocumentById();
   }
 
@@ -133,27 +133,25 @@ class _DriverViewBusState extends State<BookingScreen> {
         .collection('user_ride_details')
         .get();
 
-    List<Map<String, dynamic>> documents = querySnapshot.docs
-        .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
-        .toList();
-
-    print("user rides: $documents");
-
-    List<Map<String, dynamic>> bookSheetsdocuments = [];
-    for (var doc in documents) {
-
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('bus_trip_details')
-          .doc(doc['id'])
-          .collection('ride_details')
-          .where('bus_details_id', isEqualTo: widget.id)
-          .get();
-
-      bookSheetsdocuments = querySnapshot.docs
-          .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
-          .toList();
+    for(QueryDocumentSnapshot doc in querySnapshot.docs){
+      print(doc.id);
     }
 
-    print(bookSheetsdocuments.toString());
+    // List<Map<String, dynamic>> bookSheetsdocuments = [];
+    // for (String doc in documentIds) {
+    //
+    //   QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+    //       .collection('bus_trip_details')
+    //       .doc(doc)
+    //       .collection('ride_details')
+    //       .where('bus_details_id', isEqualTo: widget.id)
+    //       .get();
+    //
+    //   bookSheetsdocuments = querySnapshot.docs
+    //       .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
+    //       .toList();
+    // }
+
+    //print(bookSheetsdocuments.toString());
   }
 }
