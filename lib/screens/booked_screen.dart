@@ -82,7 +82,7 @@ class BookedScreen extends StatelessWidget {
                                 child: ListView.builder(itemCount: snapshot.data!.length,itemBuilder: (context, index) {
                                   return Column(
                                     children: [
-                                      Container(child: customCard(snapshot.data!.elementAt(index)['id'],context,snapshot.data!.elementAt(index)['ticket_price'], snapshot.data!.elementAt(index)['start_place'], snapshot.data!.elementAt(index)['start_time'], 'to', snapshot.data!.elementAt(index)['end_time'], snapshot.data!.elementAt(index)['bus_number'], snapshot.data!.elementAt(index)['numof_seat'], snapshot.data!.elementAt(index)['block_seat_number'])),
+                                      Container(child: customCard(snapshot.data!.elementAt(index)['id'],context,snapshot.data!.elementAt(index)['ticket_price'], snapshot.data!.elementAt(index)['start_place'], snapshot.data!.elementAt(index)['start_time'], 'to', snapshot.data!.elementAt(index)['end_time'], snapshot.data!.elementAt(index)['bus_number'], snapshot.data!.elementAt(index)['booked_seats'], snapshot.data!.elementAt(index)['block_seat_number'])),
                                     ],
                                   );
                                 },
@@ -103,17 +103,16 @@ class BookedScreen extends StatelessWidget {
     );
   }
 
-  Widget customCard(String docId,BuildContext context,String price,String town,String starttime,String duration, String endtime, String busnumber, String seatnumber, String blockSheetCount){
+  Widget customCard(String docId,BuildContext context,String price,String town,String starttime,String duration, String endtime, String busnumber, List<dynamic> seatnumber, String blockSheetCount){
     return Column(
       children: [
         SizedBox(height: 10,),
-        ConfirmCard(price: price, town: town, starttime: starttime, duration: duration, endtime: endtime, busnumber: busnumber, seatnumber: seatnumber, onTap: (){}),
+        ConfirmCard(price: price, town: town, starttime: starttime, duration: duration, endtime: endtime, busnumber: busnumber, seatnumber: seatnumber.toString(), onTap: (){}),
       ],
     );
   }
 
   Future<List<Map<String, dynamic>>> getDocumentById() async{
-    List<Map<String, dynamic>> busDetails=[];
 
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('user_ride_details')
@@ -125,15 +124,20 @@ class BookedScreen extends StatelessWidget {
         .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
         .toList();
 
-    documents.forEach((doc) async {
-      querySnapshot = await FirebaseFirestore.instance
+    List<Map<String, dynamic>> busDetails = [];
+
+    for (var doc in documents) {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot = await FirebaseFirestore.instance
           .collection('bus_trip_details')
+          .doc(doc['bus_details_id'])
           .get();
 
-      busDetails = querySnapshot.docs
-          .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
-          .toList();
-    });
+      busDetails.add({
+        'id': documentSnapshot.id,
+        'booked_seats':doc['booked_sheet'],
+        ...documentSnapshot.data() as Map<String, dynamic>,
+      });
+    }
 
     print(busDetails);
     return busDetails;

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:triptix/constants.dart';
 import 'package:triptix/widgets/widgets.dart';
@@ -21,6 +22,18 @@ class BookingScreen extends StatefulWidget {
 
 
 class _DriverViewBusState extends State<BookingScreen> {
+
+  loadFirebase() async {
+    await getDocumentById();
+  }
+
+  @override
+  void initState() {
+    loadFirebase();
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,5 +125,35 @@ class _DriverViewBusState extends State<BookingScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> getDocumentById() async{
+
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('user_ride_details')
+        .get();
+
+    List<Map<String, dynamic>> documents = querySnapshot.docs
+        .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
+        .toList();
+
+    print("user rides: $documents");
+
+    List<Map<String, dynamic>> bookSheetsdocuments = [];
+    for (var doc in documents) {
+
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('bus_trip_details')
+          .doc(doc['id'])
+          .collection('ride_details')
+          .where('bus_details_id', isEqualTo: widget.id)
+          .get();
+
+      bookSheetsdocuments = querySnapshot.docs
+          .map((doc) => {'id': doc.id, ...doc.data() as Map<String, dynamic>})
+          .toList();
+    }
+
+    print(bookSheetsdocuments.toString());
   }
 }
